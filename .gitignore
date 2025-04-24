@@ -41,3 +41,36 @@ client/yarn-error.log
 # ====================
 .DS_Store
 Thumbs.db
+
+
+# Python
+server/__pycache__/
+server/**/*.py[cod]
+*.log
+
+# Django DB file (nếu từng test bằng SQLite)
+server/db.sqlite3
+
+# Env
+.env
+server/.env
+.venv/
+server/.venv/
+venv/
+pip-selfcheck.json
+
+# Migrations
+server/**/migrations/
+!server/**/migrations/__init__.py
+
+# Static & media
+server/media/
+server/staticfiles/
+
+# Pipenv
+Pipfile.lock
+
+# IDE
+.vscode/
+.idea/
+
