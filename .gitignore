@@ -1,0 +1,76 @@
+# ====================
+# 👇 CLIENT FOLDER IGNORE (Angular, React, Vue, etc.)
+# ====================
+client/node_modules/
+client/dist/
+client/.angular/
+client/.sass-cache/
+client/.cache/
+client/.env
+client/.vscode/
+client/.DS_Store
+client/coverage/
+client/tmp/
+client/npm-debug.log
+client/yarn-error.log
+
+# ====================
+# 🧠 IDEs & Editor Settings
+# ====================
+.idea/
+.project
+.classpath
+.settings/
+*.sublime-workspace
+*.sublime-project
+.c9/
+*.launch
+
+# VS Code (keep workspace configs if needed)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# History plugin (optional)
+.history/
+
+# ====================
+# 🗂 System Files
+# ====================
+.DS_Store
+Thumbs.db
+
+
+# Python
+server/__pycache__/
+server/**/*.py[cod]
+*.log
+
+# Django DB file (nếu từng test bằng SQLite)
+server/db.sqlite3
+
+# Env
+.env
+server/.env
+.venv/
+server/.venv/
+venv/
+pip-selfcheck.json
+
+# Migrations
+server/**/migrations/
+!server/**/migrations/__init__.py
+
+# Static & media
+server/media/
+server/staticfiles/
+
+# Pipenv
+Pipfile.lock
+
+# IDE
+.vscode/
+.idea/
+
