@@ -117,6 +117,10 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError({'detail': self.error_messages['invalid_credentials']})
         data['user'] = user
         return data
+    
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField()
+    new_password = serializers.CharField()
 
 
     
