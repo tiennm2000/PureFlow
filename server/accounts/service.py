@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model, authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.exceptions import ValidationError
 
 User = get_user_model()
 
@@ -29,6 +30,15 @@ class AccountService:
     def logout(refresh_token: str) -> None:
         token = RefreshToken(refresh_token)
         token.blacklist()
+        
+    
+    @staticmethod
+    def change_user_password(user, old_password, new_password):
+        if not user.check_password(old_password):
+            raise ValidationError("Mật khẩu cũ không đúng.")
+        user.set_password(new_password)
+        user.save()
+        return "Đổi mật khẩu thành công"
 
 
 

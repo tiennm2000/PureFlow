@@ -119,8 +119,22 @@ class LoginSerializer(serializers.Serializer):
         return data
     
 class ChangePasswordSerializer(serializers.Serializer):
-    old_password = serializers.CharField()
-    new_password = serializers.CharField()
+    old_password = serializers.CharField(
+        write_only=True, 
+        style={'input_type': 'password'},
+        error_messages= {
+            'blank': 'Password không được để trống.',
+            'required': 'Password là bắt buộc.'
+        })
+    new_password = serializers.CharField(
+        write_only=True, 
+        style={'input_type': 'password'},
+        min_length=6,
+        error_messages= {
+            'min_length': 'Mật khẩu phải có ít nhất 6 ký tự.',
+            'blank': 'Password không được để trống.',
+            'required': 'Password là bắt buộc.'
+        })
 
 
     

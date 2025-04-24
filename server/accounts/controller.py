@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated 
-from .serializer import RegisterSerializer, LoginSerializer
+from .serializer import RegisterSerializer, LoginSerializer, ChangePasswordSerializer
 from .service import AccountService
 
 
@@ -45,3 +45,18 @@ class LogoutAPIView(APIView):
             return Response({'detail': 'Refresh token required.'}, status=status.HTTP_400_BAD_REQUEST)
         AccountService.logout(refresh_token)
         return Response({'detail': 'Đăng xuất thành công'}, status=status.HTTP_204_NO_CONTENT)
+    
+    
+class ChangePasswordAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request):
+        serializer = ChangePasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            message = AccountService.change_user_password(
+                request.user,
+                serializer.validated_data['old_password'],
+                serializer.validated_data['new_password']
+            )
+            return Response({"message": message}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
