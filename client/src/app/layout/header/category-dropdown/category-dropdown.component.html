@@ -1,0 +1,21 @@
+<div class="cs_nav_category_wrap cs_dropdown">
+  <span
+    class="cs_nav_category_btn cs_dropdown_btn"
+    [class.active]="isDropdownActive"
+    (click)="toggleDropdown()"
+    >All Categories</span
+  >
+  <ul
+    class="cs_nav_category_list cs_dropdown_content"
+    [class.active]="isDropdownActive"
+  >
+    @for (category of categories; track $index) {
+    <li>
+      <a [href]="category.link">
+        <img [src]="category.imageUrl" [alt]="category.name" />
+        <span>{{ category.name }}</span>
+      </a>
+    </li>
+    }
+  </ul>
+</div>
