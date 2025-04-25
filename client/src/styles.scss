@@ -1,0 +1,48 @@
+/*--------------------------------------------------------------
+>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+1. Typography
+2. Preloader
+3. Spacing
+4. General
+5. Slider
+6. Video Modal
+7. Header
+8. Footer
+9. Hero
+10. Banner
+11. Iconbox
+12. Posts
+13. CTA
+14. Card
+15. Category
+16. Product Card
+17. Animation
+18. Newsletter
+--------------------------------------------------------------*/
+
+@use "sass/default/variable" as *;
+@use "sass/default/typography" as *;
+@use "sass/common/preloader" as *;
+@use "sass/common/spacing" as *;
+@use "sass/common/general" as *;
+@use "sass/common/slider" as *;
+@use "sass/common/video-modal" as *;
+@use "sass/common/header" as *;
+@use "sass/common/footer" as *;
+@use "sass/shortcode/hero" as *;
+@use "sass/shortcode/banner" as *;
+@use "sass/shortcode/iconbox" as *;
+@use "sass/shortcode/post" as *;
+@use "sass/shortcode/cta" as *;
+@use "sass/shortcode/card" as *;
+@use "sass/shortcode/category" as *;
+@use "sass/shortcode/product_card" as *;
+@use "sass/shortcode/animation" as *;
+@use "sass/shortcode/newsletter" as *;
+
+*,
+::after,
+::before {
+  box-sizing: border-box;
+}
