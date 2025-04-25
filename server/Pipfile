@@ -9,6 +9,8 @@ mysqlclient = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
 djangorestframework-simplejwt = "*"
+django-rest-passwordreset = "*"
+python-decouple = "*"
 
 [dev-packages]
 

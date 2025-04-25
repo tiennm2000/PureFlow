@@ -2,8 +2,12 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated 
-from .serializer import RegisterSerializer, LoginSerializer, ChangePasswordSerializer
+from .serializer import RegisterSerializer, LoginSerializer, ChangePasswordSerializer, PasswordResetSerializer, PasswordResetRequestSerializer
 from .service import AccountService
+from .models import User
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class RegisterAPIView(APIView):
@@ -20,7 +24,7 @@ class RegisterAPIView(APIView):
             password=serializer.validated_data['password'],
             phone=serializer.validated_data['phone']
         )
-        return Response({'detail': 'Đăng ký thành công.'}, status=status.HTTP_201_CREATED)
+        return Response({'message': 'Đăng ký thành công.'}, status=status.HTTP_201_CREATED)
 
 class LoginAPIView(APIView):
     permission_classes = [AllowAny]
@@ -33,7 +37,7 @@ class LoginAPIView(APIView):
             password=serializer.validated_data['password']
         )
         if not tokens:
-            return Response({'detail': 'Invalid credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'message': 'Invalid credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
         return Response(tokens, status=status.HTTP_200_OK)
 
 class LogoutAPIView(APIView):
@@ -42,9 +46,9 @@ class LogoutAPIView(APIView):
     def post(self, request):
         refresh_token = request.data.get('refresh')
         if not refresh_token:
-            return Response({'detail': 'Refresh token required.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': 'Refresh token required.'}, status=status.HTTP_400_BAD_REQUEST)
         AccountService.logout(refresh_token)
-        return Response({'detail': 'Đăng xuất thành công'}, status=status.HTTP_204_NO_CONTENT)
+        return Response({'message': 'Đăng xuất thành công'}, status=status.HTTP_204_NO_CONTENT)
     
     
 class ChangePasswordAPIView(APIView):
@@ -60,3 +64,24 @@ class ChangePasswordAPIView(APIView):
             )
             return Response({"message": message}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    
+class PasswordResetRequestAPIView(APIView):
+    def post(self, request):
+        serializer = PasswordResetRequestSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        user = User.objects.get(email=serializer.validated_data['email'])
+        token_obj = AccountService.create_token(user)
+        reset_url = AccountService.build_reset_url(request, token_obj)
+        AccountService.send_reset_email(user, reset_url)
+
+        return Response({ 'detail': 'Đã gửi email reset password. Vui lòng kiểm tra hộp thư.' }, status=status.HTTP_200_OK)
+
+class PasswordResetConfirmAPIView(APIView):
+    def post(self, request, token):
+        data = { 'token': token, 'new_password': request.data.get('new_password') }
+        serializer = PasswordResetSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({ 'detail': 'Đổi mật khẩu thành công.' }, status=status.HTTP_200_OK)

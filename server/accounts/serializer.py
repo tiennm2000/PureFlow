@@ -2,6 +2,10 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model, authenticate
 from .service import AccountService
 from rest_framework.validators import UniqueValidator
+from rest_framework import serializers
+from django.contrib.auth import get_user_model
+from django.utils import timezone
+from .models import PasswordResetToken
 
 User = get_user_model()
 
@@ -103,10 +107,6 @@ class LoginSerializer(serializers.Serializer):
         style={'input_type': 'password'},
         error_messages={'black': 'Password không được để trống.'}
     )
-    
-    default_error_messages = {
-        'invalid_credentials': 'Tài khoản hoặc mật khẩu không chính xác.'
-    }
 
     def validate(self, data):
         user = authenticate(
@@ -114,7 +114,7 @@ class LoginSerializer(serializers.Serializer):
             password=data.get('password')
         )
         if not user:
-            raise serializers.ValidationError({'detail': self.error_messages['invalid_credentials']})
+            raise serializers.ValidationError({'detail': "Tài khoản hoặc mật khẩu không chính xác."})
         data['user'] = user
         return data
     
@@ -136,6 +136,37 @@ class ChangePasswordSerializer(serializers.Serializer):
             'required': 'Password là bắt buộc.'
         })
 
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate_email(self, value):
+        try:
+            user = User.objects.get(email=value)
+        except User.DoesNotExist:
+            raise serializers.ValidationError("Email chưa đăng ký")
+        return value
+
+class PasswordResetSerializer(serializers.Serializer):
+    token = serializers.UUIDField()
+    new_password = serializers.CharField(min_length=8, write_only=True)
+
+    def validate(self, attrs):
+        try:
+            token_obj = PasswordResetToken.objects.get(token=attrs['token'])
+        except PasswordResetToken.DoesNotExist:
+            raise serializers.ValidationError("Token không hợp lệ")
+        if token_obj.is_expired():
+            raise serializers.ValidationError("Token đã hết hạn")
+        attrs['token_obj'] = token_obj
+        return attrs
+
+    def save(self):
+        token_obj = self.validated_data['token_obj']
+        user = token_obj.user
+        user.set_password(self.validated_data['new_password'])
+        user.save()
+        token_obj.delete()
+        return user
 
     
 
