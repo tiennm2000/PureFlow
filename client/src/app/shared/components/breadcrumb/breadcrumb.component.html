@@ -1,0 +1,22 @@
+<div class="container">
+  <div
+    class="cs_breadcamp_wrap cs_style_1 cs_accent_light_bg cs_bg_filed cs_radius_8"
+    data-src="assets/images/breadcamp_bg_2.jpeg"
+    [style.background-image]="'url(' + breadcrumbItem.imageUrl + ')'"
+  >
+    <div>
+      <h1 class="cs_breadcamp_title cs_fs_54 cs_semibold">
+        {{ breadcrumbItem.title }}
+      </h1>
+      @if (breadcrumbItem.currentPage === "Login" ||
+      breadcrumbItem.currentPage==="Register") {
+      <p class="mb-0 cs_fs_18">{{ breadcrumbItem.description }}</p>
+      } @else {
+      <ol class="breadcrumb cs_fs_18 mb-0">
+        <li class="breadcrumb-item"><a href="home-v2.html">Home</a></li>
+        <li class="breadcrumb-item active">{{ breadcrumbItem.currentPage }}</li>
+      </ol>
+      }
+    </div>
+  </div>
+</div>
