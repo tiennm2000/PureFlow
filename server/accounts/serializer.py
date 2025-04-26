@@ -4,7 +4,6 @@ from .service import AccountService
 from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from django.utils import timezone
 from .models import PasswordResetToken
 
 User = get_user_model()
