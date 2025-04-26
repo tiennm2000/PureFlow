@@ -22,7 +22,8 @@ class RegisterAPIView(APIView):
             last_name=serializer.validated_data['last_name'],
             email=serializer.validated_data['email'],
             password=serializer.validated_data['password'],
-            phone=serializer.validated_data['phone']
+            phone=serializer.validated_data['phone'],
+            role=serializer.validated_data['role']
         )
         return Response({'message': 'Đăng ký thành công.'}, status=status.HTTP_201_CREATED)
 

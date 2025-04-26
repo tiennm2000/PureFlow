@@ -14,7 +14,7 @@ User = get_user_model()
 
 class AccountService:
     @staticmethod
-    def register(username, first_name, last_name, email, password, phone, role='Customer', **extra_fields):
+    def register(username, first_name, last_name, email, password, phone, role, **extra_fields):
         user = User(username=username, first_name=first_name, last_name=last_name, email=email, phone=phone, role=role, **extra_fields)
         user.set_password(password)  
         user.save()

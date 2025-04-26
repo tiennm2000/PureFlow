@@ -11,6 +11,8 @@ django-cors-headers = "*"
 djangorestframework-simplejwt = "*"
 django-rest-passwordreset = "*"
 python-decouple = "*"
+pillow = "*"
+unidecode = "*"
 
 [dev-packages]
 
